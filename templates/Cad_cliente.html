@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% block title %}Cadastro Cliente{% endblock %}
+
+{% block conteudo %} 
+
+<div style="margin-top: 25px; padding: 10px;">
+    <div class="d-flex justify-content-center">
+        <h1> Dados do Cliente</h1>
+    </div>
+
+    <div class="d-flex justify-content-center">
+        <form action="/cadastrar_cliente" method="POST" 
+            style="background-color: #f5f5f5; padding: 10px; border-radius: 8px; width: 350px;">
+
+            <div class="mb-3">
+            <label for="cpf" class="form-label">Cpf do Cliente: </label>
+            <input type="text" class="form-control" name="cpf" id="cpf" placeholder="cpf" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="telefone" class="form-label">Telefone: </label>
+                <input type="text" class="form-control" name="telefone" id="telefone" placeholder="Telefone" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="nome" class="form-label">Nome: </label>
+                <input type="text" class="form-control" name="nome" id="nome" placeholder="Nome" required>
+            </div>
+            <div style="float: right;">
+                <input type="submit" value="Cadastrar" class="btn btn-success btn-md">
+            </div>
+        </form>
+    </div>
+</div>
+
+{% endblock %}
