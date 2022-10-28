@@ -1,16 +1,20 @@
+import dotenv
+import os
 from flask import Flask, render_template, request # Classe que implementa gateway(WSGI)
 import mysql.connector
 from werkzeug.utils import redirect
 import datetime
 from mysql.connector import errorcode
 
+dotenv.load_dotenv(dotenv.find_dotenv())
+senha = os.getenv('password')
 
 app = Flask(__name__) # Cria uma instancia do gateway
 
 # Cria conecção com banco de dados
 def get_db_con():
     try:
-        conn = mysql.connector.connect(user = 'root', password = 'deltafox184', host = 'localhost', database = 'locacar')
+        conn = mysql.connector.connect(user = 'root', password = senha, host = 'localhost', database = 'locacar')
         print('Conexão Estabelecida')
         return conn
     except mysql.connector.Error as err:
