@@ -14,13 +14,13 @@ from mysql.connector import errorcode
 
 dotenv.load_dotenv(dotenv.find_dotenv())
 senha = os.getenv('password')
-
+data_base = os.getenv('database')
 app = Flask(__name__) # Cria uma instancia do gateway
 
 # Cria conecção com banco de dados
 def get_db_con():
     try:
-        conn = mysql.connector.connect(user = 'root', password = senha, host = 'localhost', database = 'locacar')
+        conn = mysql.connector.connect(user = 'root', password = senha, host = 'localhost', database = data_base)
         print('Conexão Estabelecida')
         return conn
     except mysql.connector.Error as err:
