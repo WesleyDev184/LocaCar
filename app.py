@@ -1,3 +1,9 @@
+# Trabalho de Lab de Banco de Dados
+# Implementação de um banco de dados de uma locadora de Carros
+# O banco de dados é montado no MySQL, tem sua parte lógica feita
+# em Python com a biblioteca Flask e sua interface é montada em
+# HTML/BootStrap
+
 import dotenv
 import os
 from flask import Flask, render_template, request # Classe que implementa gateway(WSGI)
