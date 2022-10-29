@@ -31,9 +31,14 @@ create table Aluguel (
     data_inicio date not null,
     hora TIME,
     aluguel_ativo BOOLEAN not null,
+<<<<<<< Updated upstream
     num_dias int not null,
     valor float not null,
     primary key (cpf, id_carro, data_inicio, hora),
+=======
+    valor float not null,
+    primary key (cpf, id_carro, data_inicio),
+>>>>>>> Stashed changes
     foreign key (id_carro) references Carro(id_carro),
     foreign key (cpf) references Cliente(cpf)
 );
