@@ -173,10 +173,10 @@ def cadastrar_aluguel():
         num_dias = request.form['num_dias']
         
         cur.callproc('insere_aluguel', [id_cli, id_car, data, num_dias])
-        
         conn.commit()
-        cur.close()
         
+        cur.close()
+
         return redirect('http://127.0.0.1:5000')
 
 # Endpoint que atualiza os alugueis finalizados os colocando na tabela aluguel_encerrado por meio de trigger

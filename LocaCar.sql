@@ -29,23 +29,11 @@ create table Aluguel (
 	cpf int not null, 
     id_carro int not null, 
     data_inicio date not null,
-    num_dias int not null,
+    hora TIME,
     aluguel_ativo BOOLEAN not null,
-    valor float not null,
-    primary key (cpf, id_carro, data_inicio),
-    foreign key (id_carro) references Carro(id_carro),
-    foreign key (cpf) references Cliente(cpf)
-);
-
-create table Aluguel_Encerrado (
-    id int AUTO_INCREMENT NOT NULL,
-	cpf int not null, 
-    id_carro int not null, 
-    data_inicio date not null,
     num_dias int not null,
-    aluguel_ativo BOOLEAN not null,
     valor float not null,
-    primary key (id),
+    primary key (cpf, id_carro, data_inicio, hora),
     foreign key (id_carro) references Carro(id_carro),
     foreign key (cpf) references Cliente(cpf)
 );
@@ -98,7 +86,7 @@ begin
 
         set valor = valor + (dias * val_diario);
 
-        insert into Aluguel(cpf, id_carro, data_inicio, num_dias, aluguel_ativo, valor) values(cpf, id_carro, data_inicio, num_dias, TRUE, valor);
+        insert into Aluguel(cpf, id_carro, data_inicio, hora, num_dias, aluguel_ativo, valor) values(cpf, id_carro, data_inicio, TIME(CURRENT_TIMESTAMP()), num_dias, TRUE, valor);
     end if;  
     
 end
