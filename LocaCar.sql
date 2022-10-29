@@ -31,14 +31,9 @@ create table Aluguel (
     data_inicio date not null,
     hora TIME,
     aluguel_ativo BOOLEAN not null,
-<<<<<<< Updated upstream
     num_dias int not null,
     valor float not null,
     primary key (cpf, id_carro, data_inicio, hora),
-=======
-    valor float not null,
-    primary key (cpf, id_carro, data_inicio),
->>>>>>> Stashed changes
     foreign key (id_carro) references Carro(id_carro),
     foreign key (cpf) references Cliente(cpf)
 );
@@ -51,10 +46,12 @@ begin
     insert into Tipo values(nome, valor, semanal);
 end
 
-# Procedimento para a inseção de carro
-create procedure insere_carro(in tipo varchar(20), in marca varchar(20), in modelo varchar(20), in ano varchar(5)) 
+# Procedimento para a inserção de carro
+create procedure insere_carro(in tipo varchar(20), in marca varchar(20), 
+                                in modelo varchar(20), in ano varchar(5)) 
 begin
-    insert into Carro(tipo_nome, marca, modelo, ano, disponivel) values(tipo, marca, modelo, ano, TRUE);
+    insert into Carro(tipo_nome, marca, modelo, ano, disponivel) 
+    values(tipo, marca, modelo, ano, TRUE);
 end
 
 # Procedimento para a inserção de Clientes
@@ -64,7 +61,8 @@ begin
 end
 
 # Procedimento para a inserção do Aluguel
-create procedure insere_aluguel(in cpf int, in id_carro int, in data_inicio date, in num_dias int) 
+create procedure insere_aluguel(in cpf int, in id_carro int, 
+                        in data_inicio date, in num_dias int) 
 begin
     declare tipo_car varchar(20);
     declare val_diario float default 0.0;
@@ -91,7 +89,8 @@ begin
 
         set valor = valor + (dias * val_diario);
 
-        insert into Aluguel(cpf, id_carro, data_inicio, hora, num_dias, aluguel_ativo, valor) values(cpf, id_carro, data_inicio, TIME(CURRENT_TIMESTAMP()), num_dias, TRUE, valor);
+        insert into Aluguel(cpf, id_carro, data_inicio, hora, num_dias, aluguel_ativo, valor) 
+        values(cpf, id_carro, data_inicio, TIME(CURRENT_TIMESTAMP()), num_dias, TRUE, valor);
     end if;  
     
 end
@@ -105,9 +104,9 @@ end
 # trigger que atualiza os carros quando um aluguel e finalizado
 CREATE TRIGGER atualiza_carro_e_aluguel AFTER UPDATE ON aluguel
 FOR EACH ROW
-    BEGIN
-        UPDATE carro SET disponivel = True where id_carro = new.id_carro;
-    END
+BEGIN
+    UPDATE carro SET disponivel = True where id_carro = new.id_carro;
+END
 
 #Busca carros para aluguel
 select id_carro, tipo_nome, marca, modelo, ano, CASE
@@ -118,14 +117,17 @@ select id_carro, tipo_nome, marca, modelo, ano, CASE
      end as disponibilidade
  from carro;
 
-# PROCEDURE que atualiza o valor dos carros atrasados e a cada dia que passar da devolucao adiciona mais uma diaria ao valor
+# Procedimento que atualiza o valor dos carros atrasados e a cada dia que 
+# passar da devolucao adiciona mais uma diaria ao valor
 CREATE PROCEDURE atrasados(IN id_c int, in quant_dias int)
-    begin
-    declare data_atual date;
-    declare valor_diario float;
-    set data_atual = (select curdate());
-    set valor_diario = (select distinct tip.valor_diario from Carro as Car, tipo as tip
-    where Car.tipo_nome = tip.nome and Car.id_carro = id_c);
-    
-    UPDATE aluguel set valor = valor + ( valor_diario * quant_dias), data_inicio = data_atual, num_dias = 1 where id_carro = id_c;
-    end
+begin
+declare data_atual date;
+declare valor_diario float;
+set data_atual = (select curdate());
+set valor_diario = (select distinct tip.valor_diario from Carro as Car, tipo as tip
+where Car.tipo_nome = tip.nome and Car.id_carro = id_c);
+
+UPDATE aluguel 
+set valor = valor + ( valor_diario * quant_dias), data_inicio = data_atual, num_dias = 1 
+where id_carro = id_c;
+end
