@@ -110,11 +110,10 @@ end
 
 
 # trigger que atualiza os carros quando um aluguel e finalizado
-CREATE TRIGGER atualiza_carro_e_aluguel BEFORE DELETE ON aluguel
+CREATE TRIGGER atualiza_carro_e_aluguel AFTER UPDATE ON aluguel
 FOR EACH ROW
     BEGIN
-        UPDATE carro SET disponivel = True where id_carro = old.id_carro;
-         insert into aluguel_encerrado(cpf, id_carro, data_inicio, num_dias, aluguel_ativo, valor) values(old.cpf, old.id_carro, old.data_inicio, old.num_dias, False, old.valor);
+        UPDATE carro SET disponivel = True where id_carro = new.id_carro;
     END
 
 #Busca carros para aluguel

@@ -60,7 +60,7 @@ def get_aluguel():
         cur = conn.cursor()
 
         cur.execute("""
-        select distinct Cli.nome, Cli.cpf, Car.modelo, Car.id_carro, Al.data_inicio, DATE_ADD(Al.data_inicio, INTERVAL Al.num_dias DAY) as data_entrega, Al.valor
+        select distinct Cli.nome, Cli.cpf, Car.modelo, Car.id_carro, Al.data_inicio, DATE_ADD(Al.data_inicio, INTERVAL Al.num_dias DAY) as data_entrega, Al.valor, Al.aluguel_ativo
         from Cliente as Cli, Carro as Car, Aluguel as Al
         where Cli.cpf = Al.cpf and Car.id_carro = Al.id_carro AND Al.aluguel_ativo = 1;
         """)
@@ -149,7 +149,7 @@ def get_alugueis_encerrados():
 
         cur.execute("""
         select distinct Cli.nome, Cli.cpf, Car.modelo, Car.id_carro, Al.data_inicio, DATE_ADD(Al.data_inicio, INTERVAL Al.num_dias DAY) as data_entrega, Al.valor
-        from Cliente as Cli, Carro as Car, Aluguel_encerrado as Al
+        from Cliente as Cli, Carro as Car, Aluguel as Al
         where Cli.cpf = Al.cpf and Car.id_carro = Al.id_carro AND Al.aluguel_ativo = 0;
         """)
        
@@ -180,15 +180,15 @@ def cadastrar_aluguel():
         return redirect('http://127.0.0.1:5000')
 
 # Endpoint que atualiza os alugueis finalizados os colocando na tabela aluguel_encerrado por meio de trigger
-@app.route('/update/<string:id_carro>', methods= ['POST', 'GET'])
-def update(id_carro):
+@app.route('/update/<int:cpf>/<int:id_carro>/<string:data>/<int:ativo>', methods= ['POST', 'GET'])
+def update(cpf, id_carro, data, ativo):
     conn = get_db_con()
     if conn == None:
         return "<p> problemas com conexão</p>"
     else :
         cur = conn.cursor()
         
-        cur.execute('DELETE FROM aluguel WHERE id_carro = %s', (id_carro,))
+        cur.execute('update aluguel set aluguel_ativo = false WHERE cpf = %s and id_carro = %s and data_inicio = %s and aluguel_ativo = %s', (cpf, id_carro, data, ativo,))
         
         conn.commit()
         cur.close()
