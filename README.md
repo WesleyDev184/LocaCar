@@ -12,7 +12,7 @@ Simple CRUD Flask.
 
 ### How To Run
 
-Clone the repository.
+Clone the repository in Windowos.
 install flask and MySQL-Connector to venv
 ```
 python -m venv venv
