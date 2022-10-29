@@ -95,11 +95,6 @@ begin
     
 end
 
-# Busca personalizada (Nome_cli, Nome_carro, data_inicio, data de entrega, valor)
-    select distinct Cli.nome, Cli.cpf, Car.modelo, Car.id_carro, Al.data_inicio, DATE_ADD(Al.data_inicio, INTERVAL Al.num_dias DAY) as data_entrega, Al.valor, Car.tipo_nome
-    from Cliente as Cli, Carro as Car, Aluguel as Al
-    where Cli.cpf = Al.cpf and Car.id_carro = Al.id_carro AND Al.aluguel_ativo = 1;
-
 
 # trigger que atualiza os carros quando um aluguel e finalizado
 CREATE TRIGGER atualiza_carro_e_aluguel AFTER UPDATE ON aluguel
@@ -107,15 +102,6 @@ FOR EACH ROW
 BEGIN
     UPDATE carro SET disponivel = True where id_carro = new.id_carro;
 END
-
-#Busca carros para aluguel
-select id_carro, tipo_nome, marca, modelo, ano, CASE
-    when disponivel = 1 then
-     'Disponivel'
-     else
-     'Alugado'
-     end as disponibilidade
- from carro;
 
 # Procedimento que atualiza o valor dos carros atrasados e a cada dia que 
 # passar da devolucao adiciona mais uma diaria ao valor
