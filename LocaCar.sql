@@ -39,28 +39,32 @@ create table Aluguel (
 );
 
 # Procedimento para a inserção de Tipos de carro
+delimiter $$
 create procedure insere_tipo(in nome varchar(20), in valor float) 
 begin
     declare semanal float;
     set semanal = 7 * (valor - (valor * 0.20));
     insert into Tipo values(nome, valor, semanal);
-end
+end$$
 
 # Procedimento para a inserção de carro
+delimiter $$
 create procedure insere_carro(in tipo varchar(20), in marca varchar(20), 
                                 in modelo varchar(20), in ano varchar(5)) 
 begin
     insert into Carro(tipo_nome, marca, modelo, ano, disponivel) 
     values(tipo, marca, modelo, ano, TRUE);
-end
+end$$
 
 # Procedimento para a inserção de Clientes
+delimiter $$
 create procedure insere_cliente(in cpf int, in telefone varchar(12), in nome varchar(50)) 
 begin 
     insert into Cliente(cpf, telefone, nome) values(cpf, telefone, nome);
-end
+end$$
 
 # Procedimento para a inserção do Aluguel
+delimiter $$
 create procedure insere_aluguel(in cpf int, in id_carro int, 
                         in data_inicio date, in num_dias int) 
 begin
@@ -93,27 +97,29 @@ begin
         values(cpf, id_carro, data_inicio, TIME(CURRENT_TIMESTAMP()), num_dias, TRUE, valor);
     end if;  
     
-end
+end$$
 
 
 # trigger que atualiza os carros quando um aluguel e finalizado
+delimiter $$
 CREATE TRIGGER atualiza_carro_e_aluguel AFTER UPDATE ON aluguel
 FOR EACH ROW
 BEGIN
     UPDATE carro SET disponivel = True where id_carro = new.id_carro;
-END
+END$$
 
 # Procedimento que atualiza o valor dos carros atrasados e a cada dia que 
 # passar da devolucao adiciona mais uma diaria ao valor
+delimiter $$
 CREATE PROCEDURE atrasados(IN id_c int, in quant_dias int)
 begin
-declare data_atual date;
-declare valor_diario float;
-set data_atual = (select curdate());
-set valor_diario = (select distinct tip.valor_diario from Carro as Car, tipo as tip
-where Car.tipo_nome = tip.nome and Car.id_carro = id_c);
-
-UPDATE aluguel 
-set valor = valor + ( valor_diario * quant_dias), data_inicio = data_atual, num_dias = 1 
-where id_carro = id_c;
-end
+    declare data_atual date;
+    declare valor_diario float;
+    set data_atual = (select curdate());
+    set valor_diario = (select distinct tip.valor_diario from Carro as Car, tipo as tip
+    where Car.tipo_nome = tip.nome and Car.id_carro = id_c);
+    
+    UPDATE aluguel 
+    set valor = valor + ( valor_diario * quant_dias), data_inicio = data_atual, num_dias = 1 
+    where id_carro = id_c;
+end$$
