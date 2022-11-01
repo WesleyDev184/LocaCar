@@ -7,6 +7,7 @@ Simple CRUD Flask.
 - Flask
 - MySQL
 - Html
+- Python
 - Bootstrap
 - JavaScript
 
@@ -19,6 +20,7 @@ python -m venv venv
 .\venv\Scripts\Activate.ps1
 pip install flask
 pip install mysql-connector-python
+pip install python-dotenv
 ```
 Execulte the code 
 ```
