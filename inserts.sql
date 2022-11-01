@@ -4,6 +4,7 @@ call insere_tipo('GRANDE', 73);
 call insere_tipo('MEDIO', 52);
 call insere_tipo('SUV', 80);
 call insere_tipo('VAN', 101);
+
 call insere_cliente(18444,66999785567,'wesley');
 call insere_cliente(23145,66999785567,'juliana');
 call insere_cliente(55555,66999785567,'linder');
