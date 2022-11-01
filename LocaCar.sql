@@ -1,5 +1,3 @@
--- SQLBook: Code
--- Active: 1662482481446@@127.0.0.1@3306@locacar
 create table Cliente (
 	cpf int not null,
 	telefone varchar(12) not null,
