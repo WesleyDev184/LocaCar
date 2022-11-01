@@ -3,6 +3,13 @@
 # O banco de dados é montado no MySQL, tem sua parte lógica feita
 # em Python com a biblioteca Flask e sua interface é montada em
 # HTML/BootStrap
+# Antes de rodar o porgrma, siga o passo a passo do README.md
+# após isso crie o banco de dados e execulte o arquivo LocaCar.slq,
+# logo em seguida o arquivo inserts.sql, após isso pode rodar o app.py
+# e ultilizar o sistema para inserir carros, clientes e alugueis.
+# obs: crie um arquivo ".env", dentro dele faça como no exemplo:
+# password = 123456 
+# database = locacar
 
 import dotenv
 import os

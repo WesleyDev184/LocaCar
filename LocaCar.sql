@@ -52,8 +52,7 @@ delimiter $$
 create procedure insere_carro(in tipo varchar(20), in marca varchar(20), 
                                 in modelo varchar(20), in ano varchar(5)) 
 begin
-    insert into Carro(tipo_nome, marca, modelo, ano, disponivel) 
-    values(tipo, marca, modelo, ano, TRUE);
+    insert into Carro(tipo_nome, marca, modelo, ano, disponivel) values(tipo, marca, modelo, ano, TRUE);
 end$$
 
 # Procedimento para a inserção de Clientes
@@ -118,7 +117,7 @@ begin
     set data_atual = (select curdate());
     set valor_diario = (select distinct tip.valor_diario from Carro as Car, tipo as tip
     where Car.tipo_nome = tip.nome and Car.id_carro = id_c);
-    
+
     UPDATE aluguel 
     set valor = valor + ( valor_diario * quant_dias), data_inicio = data_atual, num_dias = 1 
     where id_carro = id_c;
