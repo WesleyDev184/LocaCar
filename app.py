@@ -20,14 +20,16 @@ import datetime
 from mysql.connector import errorcode
 
 dotenv.load_dotenv(dotenv.find_dotenv())
-senha = os.getenv('password')
-data_base = os.getenv('database')
+senha = os.getenv("password")
+data_base = os.getenv("database")
+bd_user = os.getenv("user")
+
 app = Flask(__name__) # Cria uma instancia do gateway
 
 # Cria conecção com banco de dados
 def get_db_con():
     try:
-        conn = mysql.connector.connect(user = 'root', password = senha, host = 'localhost', database = data_base)
+        conn = mysql.connector.connect(host="localhost", port=3306, user=bd_user, password=senha, database = data_base)
         print('Conexão Estabelecida')
         return conn
     except mysql.connector.Error as err:
@@ -52,7 +54,7 @@ def get_carros():
             else
             'Alugado'
             end as disponibilidade
-        from carro;
+        from Carro;
         """)
        
         carros = cur.fetchall()
@@ -195,7 +197,7 @@ def update(cpf, id_carro, data, ativo):
     else :
         cur = conn.cursor()
         
-        cur.execute('update aluguel set aluguel_ativo = false WHERE cpf = %s and id_carro = %s and data_inicio = %s and aluguel_ativo = %s', (cpf, id_carro, data, ativo,))
+        cur.execute('update Aluguel set aluguel_ativo = false WHERE cpf = %s and id_carro = %s and data_inicio = %s and aluguel_ativo = %s', (cpf, id_carro, data, ativo,))
         
         conn.commit()
         cur.close()

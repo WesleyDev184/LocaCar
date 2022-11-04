@@ -1,3 +1,4 @@
+-- Active: 1667562650848@@127.0.0.1@3306@locacar
 create table Cliente (
 	cpf int not null,
 	telefone varchar(12) not null,
@@ -74,8 +75,8 @@ begin
 
     set dias = num_dias;
     set tipo_car = (select c.tipo_nome from Carro as c where c.id_carro = id_carro);
-    set val_diario =  (select a.valor_diario from tipo as a where a.nome = tipo_car);
-    set val_semanal = (select a.valor_semanal from tipo as a where a.nome = tipo_car);
+    set val_diario =  (select a.valor_diario from Tipo as a where a.nome = tipo_car);
+    set val_semanal = (select a.valor_semanal from Tipo as a where a.nome = tipo_car);
     set disp = (select c.disponivel from Carro as c where c.id_carro = id_carro);
 
     if disp = TRUE then
@@ -99,11 +100,11 @@ end$$
 
 # trigger que atualiza os carros quando um aluguel e finalizado
 delimiter $$
-CREATE TRIGGER atualiza_carro_e_aluguel AFTER UPDATE ON aluguel
+CREATE TRIGGER atualiza_carro_e_aluguel AFTER UPDATE ON Aluguel
 FOR EACH ROW
 BEGIN
-    UPDATE carro SET disponivel = True where id_carro = new.id_carro;
-END$$
+    UPDATE Carro SET disponivel = True where id_carro = new.id_carro;
+END
 
 # Procedimento que atualiza o valor dos carros atrasados e a cada dia que 
 # passar da devolucao adiciona mais uma diaria ao valor
@@ -116,7 +117,7 @@ begin
     set valor_diario = (select distinct tip.valor_diario from Carro as Car, tipo as tip
     where Car.tipo_nome = tip.nome and Car.id_carro = id_c);
 
-    UPDATE aluguel 
+    UPDATE Aluguel 
     set valor = valor + ( valor_diario * quant_dias), data_inicio = data_atual, num_dias = 1 
     where id_carro = id_c;
 end$$
