@@ -198,7 +198,7 @@ def update(cpf, id_carro, data, ativo):
         cur = conn.cursor()
         
         cur.execute('update Aluguel set aluguel_ativo = false WHERE cpf = %s and id_carro = %s and data_inicio = %s and aluguel_ativo = %s', (cpf, id_carro, data, ativo,))
-        
+
         conn.commit()
         cur.close()
         return redirect('http://127.0.0.1:5000')

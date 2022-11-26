@@ -1,4 +1,4 @@
--- Active: 1667562650848@@127.0.0.1@3306@locacar
+-- Active: 1669136213736@@127.0.0.1@3306@lab_bd
 create table Cliente (
 	cpf int not null,
 	telefone varchar(12) not null,
@@ -121,3 +121,17 @@ begin
     set valor = valor + ( valor_diario * quant_dias), data_inicio = data_atual, num_dias = 1 
     where id_carro = id_c;
 end$$
+
+
+CREATE PROCEDURE pega_deposito(IN cli_cpf int)
+BEGIN
+    declare erro_sql tinyint default FALSE;
+    DECLARE CONTINUE HANDLER FOR SQLEXCEPTION SET erro_sql = TRUE;
+    start transaction;
+        UPDATE `Cliente` set deposito = 0 WHERE cpf = cli_cpf;
+    if erro_sql = FALSE then
+        COMMIT;
+    else
+        ROLLBACK;
+    end if;
+END
