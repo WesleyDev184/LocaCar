@@ -85,7 +85,7 @@ def index():
     conn = get_db_con()
     if conn == None:
         return "<p>problemas com conexão</p>"
-    else :
+    else:
         cur = conn.cursor()
         data_atual = datetime.date.today()
         for i in get_aluguel():
