@@ -1,6 +1,5 @@
 # LocaCar
  CRUD Flask/MySQL
-Simple CRUD Flask.
 
  Trabalho de Lab de Banco de Dados
  Implementação de um banco de dados de uma locadora de Carros
