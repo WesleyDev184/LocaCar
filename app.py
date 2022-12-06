@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request # Classe que implementa gateway(WSGI)
-import mysql.connector
-from werkzeug.utils import redirect
 from mysql.connector import errorcode
+from werkzeug.utils import redirect
+import mysql.connector
 import datetime
 import dotenv
 import os
