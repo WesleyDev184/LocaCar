@@ -11,10 +11,10 @@ Simple CRUD Flask.
  após isso crie o banco de dados e execute o arquivo LocaCar.slq,
  logo em seguida o arquivo inserts.sql, após isso pode rodar o app.py
  e utilizar o sistema para inserir carros, clientes e alugueis.
- obs: crie um arquivo ".env", dentro dele faça como no exemplo:
- password = 123456 
- database = locacar
- user = root
+- obs: crie um arquivo ".env", dentro dele faça como no exemplo:
+- password = 123456 
+- database = locacar
+- user = root
 
 ### Technologies Used:
 
