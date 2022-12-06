@@ -154,7 +154,7 @@ def get_alugueis_encerrados():
     return render_template('alugueis_encerrados.html', aluguel_encerrados = data)
         
 
-# Endpoint que para o cadastro dos alugueis de veículos 
+# Endpoint que cadastra os alugueis de veículos 
 @app.route('/cadastrar_aluguel', methods = [ 'POST' ])
 def cadastrar_aluguel():
     conn = get_db_con()
