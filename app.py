@@ -13,7 +13,7 @@ bd_user = os.getenv("user")
 
 app = Flask(__name__) # Cria uma instancia do gateway
 
-# Cria conecção com banco de dados
+# Cria conexão com banco de dados
 def get_db_con():
     try:
         conn = mysql.connector.connect(host="localhost", port=3306, user=bd_user, password=senha, database = data_base)
