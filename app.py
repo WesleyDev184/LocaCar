@@ -10,6 +10,7 @@
 # obs: crie um arquivo ".env", dentro dele faça como no exemplo:
 # password = 123456 
 # database = locacar
+# user = root
 
 import dotenv
 import os
@@ -99,7 +100,7 @@ def index():
     
     return render_template('index.html', aluguel = get_aluguel(), dados = get_carros())
 
-# Rota para cadatrar novos clientes
+# Rota para cadastrar novos clientes
 @app.route('/cad_cli')
 def get_form_cadastro_cli():
     return render_template('Cad_cliente.html')
