@@ -3,10 +3,10 @@
 # O banco de dados é montado no MySQL, tem sua parte lógica feita
 # em Python com a biblioteca Flask e sua interface é montada em
 # HTML/BootStrap
-# Antes de rodar o porgrma, siga o passo a passo do README.md
-# após isso crie o banco de dados e execulte o arquivo LocaCar.slq,
+# Antes de rodar o programa, siga o passo a passo do README.md
+# após isso crie o banco de dados e execute o arquivo LocaCar.slq,
 # logo em seguida o arquivo inserts.sql, após isso pode rodar o app.py
-# e ultilizar o sistema para inserir carros, clientes e alugueis.
+# e utilizar o sistema para inserir carros, clientes e alugueis.
 # obs: crie um arquivo ".env", dentro dele faça como no exemplo:
 # password = 123456 
 # database = locacar
@@ -34,7 +34,7 @@ def get_db_con():
         return conn
     except mysql.connector.Error as err:
         if err.errno == errorcode.ER_ACCESS_DENIED_ERROR:
-            print("Usuário ou Senha invalidos!")
+            print("Usuário ou Senha inválidos!")
             return None
         if err.errno == errorcode.ER_BAD_DB_ERROR:
             print("Banco de Dados Inexistente")
@@ -50,7 +50,7 @@ def get_carros():
         cur.execute("""
         select id_carro, tipo_nome, marca, modelo, ano, CASE
             when disponivel = 1 then
-            'Disponivel'
+            'Disponível'
             else
             'Alugado'
             end as disponibilidade
@@ -79,7 +79,7 @@ def get_aluguel():
         return data
             
 
-# Rota principal que faz a exibixao das infomacoes de aluguel e carros
+# Rota principal que faz a exibição das informações de aluguel e carros
 @app.route('/', methods = [ 'GET' ])
 def index():
     conn = get_db_con()
@@ -167,7 +167,7 @@ def get_alugueis_encerrados():
     return render_template('alugueis_encerrados.html', aluguel_encerrados = data)
         
 
-# Endpoint que para o cadastro dos alugueis de veiculos 
+# Endpoint que para o cadastro dos alugueis de veículos 
 @app.route('/cadastrar_aluguel', methods = [ 'POST' ])
 def cadastrar_aluguel():
     conn = get_db_con()
