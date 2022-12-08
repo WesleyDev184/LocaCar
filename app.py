@@ -165,7 +165,7 @@ def cadastrar_aluguel():
         
         id_car = request.form['id_carro']
         id_cli = request.form['id_cliente']
-        data = datetime.date.today()
+        data = request.form['data_inicio']
         num_dias = request.form['num_dias']
         
         cur.callproc('insere_aluguel', [id_cli, id_car, data, num_dias])

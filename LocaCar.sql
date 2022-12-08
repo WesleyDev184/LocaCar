@@ -1,4 +1,4 @@
--- Active: 1669136213736@@127.0.0.1@3306@lab_bd
+-- Active: 1669136213736@@127.0.0.1@3306@locacar
 create table Cliente (
 	cpf int not null,
 	telefone varchar(12) not null,

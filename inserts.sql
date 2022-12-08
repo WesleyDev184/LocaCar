@@ -1,4 +1,4 @@
--- Active: 1669136213736@@127.0.0.1@3306@lab_bd
+-- Active: 1669136213736@@127.0.0.1@3306@locacar
 call insere_tipo('COMPACTO', 40);
 call insere_tipo('CAMINHAO', 250);
 call insere_tipo('GRANDE', 73);
