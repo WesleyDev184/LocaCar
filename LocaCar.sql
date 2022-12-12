@@ -37,6 +37,14 @@ create table Aluguel (
     foreign key (cpf) references Cliente(cpf)
 );
 
+CREATE TABLE Banco(
+    id_conta int not null AUTO_INCREMENT,
+    cpf int NOT NULL,
+    usuario varchar(25),
+    saldo int,
+    PRIMARY KEY (id_banco)
+);
+
 # Procedimento para a inserção de Tipos de carro
 delimiter $$
 create procedure insere_tipo(in nome varchar(20), in valor float) 
@@ -59,6 +67,7 @@ delimiter $$
 create procedure insere_cliente(in cpf int, in telefone varchar(12), in nome varchar(50)) 
 begin 
     insert into Cliente(cpf, telefone, nome) values(cpf, telefone, nome);
+    INSERT INTO `Banco`(cpf, usuario, saldo) values(cpf, nome, 5000);
 end$$
 
 # Procedimento para a inserção do Aluguel
@@ -80,10 +89,6 @@ begin
     set disp = (select c.disponivel from Carro as c where c.id_carro = id_carro);
 
     if disp = TRUE then
-        update Carro as c
-        set c.disponivel = FALSE
-        where c.id_carro = id_carro;
-
         while dias >= 7 do
             set dias = dias - 7;
             set valor = valor + val_semanal;
@@ -123,12 +128,12 @@ begin
 end$$
 
 
-CREATE PROCEDURE pega_deposito(IN cli_cpf int)
+CREATE PROCEDURE finaliza_aluguel(IN cli_cpf int, IN id_car int, IN data date, IN ativo int)
 BEGIN
     declare erro_sql tinyint default FALSE;
     DECLARE CONTINUE HANDLER FOR SQLEXCEPTION SET erro_sql = TRUE;
     start transaction;
-        UPDATE `Cliente` set deposito = 0 WHERE cpf = cli_cpf;
+        update Aluguel set aluguel_ativo = false WHERE cpf = cli_cpf and id_carro = id_car and data_inicio = data and aluguel_ativo = ativo;
     if erro_sql = FALSE then
         COMMIT;
     else
