@@ -1,4 +1,4 @@
--- Active: 1669136213736@@127.0.0.1@3306@locacar
+-- Active: 1670887578219@@127.0.0.1@3306@locacar
 create table Cliente (
 	cpf int not null,
 	telefone varchar(12) not null,
@@ -42,7 +42,7 @@ CREATE TABLE Banco(
     cpf int NOT NULL,
     usuario varchar(25),
     saldo int,
-    PRIMARY KEY (id_banco)
+    PRIMARY KEY (id_conta)
 );
 
 # Procedimento para a inserção de Tipos de carro
@@ -128,15 +128,37 @@ begin
 end$$
 
 
-CREATE PROCEDURE finaliza_aluguel(IN cli_cpf int, IN id_car int, IN data date, IN ativo int)
+CREATE PROCEDURE finaliza_aluguel(IN cli_cpf int, IN id_car int, IN data DATE, IN ativo int, IN data_atual DATE)
 BEGIN
+    declare dias int;
+    declare tipo_car varchar(20);
+    declare val_diario float default 0.0;
+    declare val_semanal float default 0.0;
+    declare val float default 0.0;
     declare erro_sql tinyint default FALSE;
     DECLARE CONTINUE HANDLER FOR SQLEXCEPTION SET erro_sql = TRUE;
+
+    set tipo_car = (select c.tipo_nome from Carro as c where c.id_carro = id_car);
+    set val_diario =  (select a.valor_diario from Tipo as a where a.nome = tipo_car);
+    set val_semanal = (select a.valor_semanal from Tipo as a where a.nome = tipo_car);
+    set dias = DATEDIFF(data_atual, data);
     start transaction;
-        update Aluguel set aluguel_ativo = false WHERE cpf = cli_cpf and id_carro = id_car and data_inicio = data and aluguel_ativo = ativo;
+
+        while dias >= 7 do
+            set dias = dias - 7;
+            set val = val + val_semanal;
+        end while;
+
+        set val = val + (dias * val_diario);
+
+        UPDATE `Banco` set saldo = saldo - val WHERE cpf = cli_cpf;
+        UPDATE `Banco` set saldo = saldo + val WHERE cpf = 369558;
+        
+
+        update Aluguel set aluguel_ativo = false, valor = val WHERE cpf = cli_cpf and id_carro = id_car and data_inicio = data and aluguel_ativo = ativo;
     if erro_sql = FALSE then
         COMMIT;
     else
         ROLLBACK;
     end if;
-END
+END;
