@@ -79,16 +79,17 @@ begin
     declare val_diario float default 0.0;
     declare val_semanal float default 0.0;
     declare valor float default 0.0;
-    declare disp boolean;
     declare dias int;
+    declare erro_sql tinyint default FALSE;
 
+    DECLARE CONTINUE HANDLER FOR SQLEXCEPTION SET erro_sql = TRUE;
     set dias = num_dias;
     set tipo_car = (select c.tipo_nome from Carro as c where c.id_carro = id_carro);
     set val_diario =  (select a.valor_diario from Tipo as a where a.nome = tipo_car);
     set val_semanal = (select a.valor_semanal from Tipo as a where a.nome = tipo_car);
-    set disp = (select c.disponivel from Carro as c where c.id_carro = id_carro);
 
-    if disp = TRUE then
+    start transaction;
+    
         while dias >= 7 do
             set dias = dias - 7;
             set valor = valor + val_semanal;
@@ -98,7 +99,12 @@ begin
 
         insert into Aluguel(cpf, id_carro, data_inicio, hora, num_dias, aluguel_ativo, valor) 
         values(cpf, id_carro, data_inicio, TIME(CURRENT_TIMESTAMP()), num_dias, TRUE, valor);
-    end if;  
+
+    if erro_sql = FALSE then
+        COMMIT;
+    else
+        ROLLBACK;
+    end if;
     
 end$$
 
